@@ -41,7 +41,7 @@ def post(speed):
     from datetime import datetime
     from uuid import getnode as get_mac
 
-    url = 'http://192.168.1.13:3000/data'
+    url = 'http://192.168.1.56:3000/data'
     now = datetime.now()
 
     print(speed)
