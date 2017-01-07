@@ -4,7 +4,11 @@ import netifaces as ni
 import os
 import sys
 
-TCP_IP = ni.ifaddresses('enp0s3')[2][0]['addr']
+if (len(sys.argv) != 2):
+    print("usage:", sys.agrv[0], "<net interface>")
+    sys.exit()
+
+TCP_IP = ni.ifaddresses(sys.argv[1])[2][0]['addr']
 TCP_PORT = 4000
 BUFFER_SIZE = 20
 
