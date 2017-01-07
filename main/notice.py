@@ -41,10 +41,10 @@ while 1:
             if not data: break
             print("received data:", data.decode())
             if (data.decode() == "FAST"):
-                trigger(green_pin, True, 0.5)
+                trigger(green_pin, True, 0.2)
                 trigger(green_pin, False, 0)
             elif (data.decode() == "SLOW"):
-                trigger(red_pin, True, 0.5)
+                trigger(red_pin, True, 0.2)
                 trigger(red_pin, False, 0)
             conn.send(data)
         conn.close()

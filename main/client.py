@@ -9,9 +9,14 @@ if (len(sys.argv) != 6):
     print("usage: ./client.py <IP> <PORT> <MAC> <SPEED> <DISTANCE>")
     sys.exit()
 
+def trigger(pin, value, t):
+    GPIO.output(pin, value)
+    time.sleep(t)
+
 red_pin = 17
 green_pin = 22
 
+GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(red_pin, GPIO.OUT)
 GPIO.setup(green_pin, GPIO.OUT)

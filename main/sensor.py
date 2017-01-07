@@ -166,7 +166,7 @@ while True:
     counter = counter + 1
     if (counter >= 25):
         # post(get_speed(speedX, speedY, speedZ), get_distance())
-        os.system("./client.py " + sys.argv[1] + ' ' + sys.argv[2] + ' ' + get_mac() + ' '  + get_speed(speedX, speedY, speedZ) + ' ' + get_distance())
+        os.system("./client.py " + sys.argv[1] + ' ' + sys.argv[2] + ' ' + str(get_mac()) + ' '  + str(get_speed(speedX, speedY, speedZ)) + ' ' + str(get_distance()))
         counter = 0
         speedX = 0
         speedY = 0
