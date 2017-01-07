@@ -4,9 +4,11 @@ import smbus
 import math
 import time
 import sys
+import os
+from uuid import getnode as get_mac
 
-if (len(sys.argv) != 2):
-    print("usage:", sys.argv[0], "<IPaddress>")
+if (len(sys.argv) != 3):
+    print("usage:", sys.argv[0], "<IPaddress> <PORT>")
     sys.exit()
 
 # sonic
@@ -16,22 +18,6 @@ echo_pin_2 = 24
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(trigger_pin_2, GPIO.OUT)
 GPIO.setup(echo_pin_2, GPIO.IN)
-def post(distance): 
-    import requests
-    from datetime import datetime
-    from uuid import getnode as get_mac
-
-    url = 'http://' + sys.argv[1] + '/data'
-    now = datetime.now()
-
-    payload = {
-        'datum[mac]': get_mac(),
-        'datum[speed]': now.second,
-        'datum[distance]': distance
-    }
-
-    r = requests.post(url, data=payload)
-    return
 
 def send_trigger_pulse(pin):
     GPIO.output(pin, True)
@@ -88,6 +74,7 @@ def get_x_rotation(x,y,z):
     radians = math.atan2(y, dist(x,z))
     return math.degrees(radians)
 
+'''
 def post(speed, distance): 
     import requests
     from datetime import datetime
@@ -104,6 +91,7 @@ def post(speed, distance):
     }
     r = requests.post(url, data=payload)
     return
+'''
 
 def get_speed(x, y, z):
     return (abs(x)**3 + abs(y)**3 + abs(z)**3)**(1/3.0)
@@ -135,14 +123,6 @@ while True:
 
     # Now wake the 6050 up as it starts in sleep mode
     bus.write_byte_data(address, power_mgmt_1, 0)
-
-    counter = counter + 1
-    if (counter >= 25):
-        post(get_speed(speedX, speedY, speedZ), get_distance())
-        counter = 0
-        speedX = 0
-        speedY = 0
-        speedZ = 0
 
     t = time.time()
     gyro_xout = read_word_2c(0x43)
@@ -182,3 +162,13 @@ while True:
     lastAx = Accx;
     lastAy = Accy;
     lastAz = Accz;
+
+    counter = counter + 1
+    if (counter >= 25):
+        # post(get_speed(speedX, speedY, speedZ), get_distance())
+        os.system("./client.py " + sys.argv[1] + ' ' + sys.argv[2] + ' ' + get_mac() + ' '  + get_speed(speedX, speedY, speedZ) + ' ' + get_distance())
+        counter = 0
+        speedX = 0
+        speedY = 0
+        speedZ = 0
+
