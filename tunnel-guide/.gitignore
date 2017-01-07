@@ -1,0 +1,10 @@
+/db/schema.rb
+
+/config/initializers/secret_token.rb
+*.yml
+/public/
+
+# Ignore all logfiles and tempfiles.
+/log/
+/tmp
+/vendor/cache
