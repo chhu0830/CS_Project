@@ -1,9 +1,14 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 import smbus
 import math
 import time
 from time import time
+import sys
+
+if (len(sys.argv) != 2):
+    print("usage:", sys.argv[0], "<IPaddress>")
+    sys.exit();
 
 # Power management registers
 power_mgmt_1 = 0x6b
@@ -41,7 +46,7 @@ def post(speed):
     from datetime import datetime
     from uuid import getnode as get_mac
 
-    url = 'http://192.168.1.56:3000/data'
+    url = 'http://' + sys.argv[1] + '/data'
     now = datetime.now()
 
     print(speed)
@@ -88,8 +93,8 @@ while(True):
     '''
     # print ("---------")
     counter = counter + 1
-    if (counter >= 125):
-        print("v", speedX, speedY, speedZ)
+    if (counter >= 25):
+        post(get_speed(speedX, speedY, speedZ))
         counter = 0
         speedX = 0
         speedY = 0
@@ -164,8 +169,6 @@ while(True):
     lastAy = Accy;
     lastAz = Accz;
     
-    post(get_speed(Ax, Ay, Az))
-
 
     '''
     print("TIME:", dt)
