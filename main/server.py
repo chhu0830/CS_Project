@@ -18,7 +18,7 @@ s.listen(1)
 print("listen at", TCP_IP, TCP_PORT)
 
 data = {}
-danger_distance = 10.0
+danger_distance = 20.0
 danger_speed = 100.0
 low_speed = 10.0
 
