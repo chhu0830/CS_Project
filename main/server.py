@@ -18,8 +18,9 @@ s.listen(1)
 print("listen at", TCP_IP, TCP_PORT)
 
 data = {}
-danger_distance = 10
-low_speed = 10
+danger_distance = 10.0
+danger_speed = 100.0
+low_speed = 10.0
 
 while True:
     conn, addr = s.accept()
@@ -29,17 +30,22 @@ while True:
     recv = recv.decode()
     recv = recv.split(' ')
     data[recv[0]] = [recv[1], recv[2]]
+
+    cur_speed = recv[1]
+    cur_distance = recv[2]
     
     max_speed = 0.0
     for i in data:
         if float(data[i][0]) > max_speed:
-            maxspeed = float(data[i][0])
+            max_speed = float(data[i][0])
 
-    if float(recv[2]) < danger_distance:
+    if float(cur_distance) < danger_distance:
         msg = "SLOW"
-    elif float(recv[1]) < max_speed:
+    elif float(cur_speed) > danger_speed:
+        msg = "SLOW"
+    elif float(cur_speed) < max_speed:
         msg = "FAST"
-    elif float(recv[1]) < low_speed:
+    elif float(cur_speed) < low_speed:
         msg = "FAST"
     else:
         msg = "KEEP"
