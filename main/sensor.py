@@ -116,7 +116,6 @@ speedY = 0.00
 speedZ = 0.00
 counter = 0
 
-
 while True:
     bus = smbus.SMBus(1) # or bus = smbus.SMBus(1) for Revision 2 boards
     address = 0x68       # This is the address value read via the i2cdetect command
@@ -146,15 +145,23 @@ while True:
     Gyrox = Gyrox + (lasttimeX + gx) * dt / 2
     Gyroy = Gyroy + (lasttimeY + gy) * dt / 2
     Gyroz = Gyroz + (lasttimeZ + gz) * dt / 2
-    
+
     Ax = (lastAx + Accx) * dt / 2 * 100
     Ay = (lastAy + Accy) * dt / 2 * 100
     Az = (lastAz + Accz) * dt / 2 * 100
 
+    offset = 0.5
+    if abs(Ax) < offset:
+        Ax = 0
+    if abs(Ay) < offset:
+        Ay = 0
+    if abs(Az) < offset:
+        Az = 0
+
     speedX += Ax
     speedY += Ay
     speedZ += Az
-    
+
     lasttimeX = gx;
     lasttimeY = gy;
     lasttimeZ = gz;
@@ -165,10 +172,7 @@ while True:
 
     counter = counter + 1
     if (counter >= 25):
-        # post(get_speed(speedX, speedY, speedZ), get_distance())
         os.system("./client.py " + sys.argv[1] + ' ' + sys.argv[2] + ' ' + str(get_mac()) + ' '  + str(get_speed(speedX, speedY, speedZ)) + ' ' + str(get_distance()))
         counter = 0
-        speedX = 0
-        speedY = 0
-        speedZ = 0
+        speedX = speedY = speedZ = 0
 
