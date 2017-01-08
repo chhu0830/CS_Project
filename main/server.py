@@ -19,7 +19,7 @@ print("listen at", TCP_IP, TCP_PORT)
 
 data = {}
 danger_distance = 20.0
-danger_speed = 100.0
+danger_speed = 200.0
 low_speed = 10.0
 
 while True:
