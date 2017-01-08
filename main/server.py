@@ -3,6 +3,7 @@ import socket
 import netifaces as ni
 import os
 import sys
+import datetime
 
 if (len(sys.argv) != 3):
     print("usage:", sys.argv[0], "<net interface> <port>")
@@ -19,7 +20,7 @@ print("listen at", TCP_IP, TCP_PORT)
 
 data = {}
 danger_distance = 20.0
-danger_speed = 200.0
+danger_speed = 100.0
 low_speed = 10.0
 
 while True:
@@ -52,3 +53,7 @@ while True:
 
     conn.send(msg.encode('utf-8'))
     conn.close()
+
+    f = open('log/' + recv[0], 'a')
+    f.write(str(datetime.datetime.now()) + '\t' + cur_speed + '\t' + cur_distance + '\t' + msg + '\n')
+    f.close()
