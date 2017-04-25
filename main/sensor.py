@@ -172,7 +172,8 @@ while True:
 
     counter = counter + 1
     if (counter >= 25):
-        os.system("./client.py " + sys.argv[1] + ' ' + sys.argv[2] + ' ' + str(get_mac()) + ' '  + str(get_speed(speedX, speedY, speedZ)) + ' ' + str(get_distance()))
+        result = '"speed: ' + str(get_speed(speedX, speedY, speedZ)) + '    distance: ' + str(get_distance()) + '"'
+        os.system("python3 om2m.py 4 " + sys.argv[1] + ' ' + sys.argv[2] + ' ' + result)
         counter = 0
         speedX = speedY = speedZ = 0
 
