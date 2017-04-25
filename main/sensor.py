@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import RPi.GPIO as GPIO
+import requests
 import smbus
 import math
 import time
@@ -74,6 +75,20 @@ def get_x_rotation(x,y,z):
     radians = math.atan2(y, dist(x,z))
     return math.degrees(radians)
 
+def subscribe(application, container):
+    print('before subscribe')
+    sub_url = 'http://140.113.66.98:8080/~/in-cse/in-name/' + application + container
+    sub_headers={
+        'X-M2M-Origin': 'admin:admin',
+        'Content-Type': 'application/xml:ty=23'
+    }
+    sub_data='<m2m:sub xmlns:m2m="http://www.onem2m.org/xml/protocols">\
+                <nu>http://localhost:1400/monitor</nu>\
+                <nct>2</nct>\
+              </m2m:sub>'
+    print(requests.post(sub_url, headers=sub_headers, data=sub_data))
+    print('after subscribe')
+
 '''
 def post(speed, distance): 
     import requests
@@ -115,6 +130,11 @@ speedX = 0.00
 speedY = 0.00
 speedZ = 0.00
 counter = 0
+
+#new container
+os.system("python3 om2m.py 3 " + sys.argv[1] + ' ' + sys.argv[2])
+#subscribe
+subscribe(sys.argv[1], sys.argv[2])
 
 while True:
     bus = smbus.SMBus(1) # or bus = smbus.SMBus(1) for Revision 2 boards
