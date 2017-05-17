@@ -76,12 +76,8 @@ Az = 0.00
 lastAx = 0.00
 lastAy = 0.00
 lastAz = 0.00
-speedX = 0.00
-speedY = 0.00
-speedZ = 0.00
-counter = 0
 
-while(True):
+def gy521():
     bus = smbus.SMBus(1) # or bus = smbus.SMBus(1) for Revision 2 boards
     address = 0x68       # This is the address value read via the i2cdetect command
 
@@ -92,14 +88,6 @@ while(True):
     print ("gyro data")
     '''
     # print ("---------")
-    counter = counter + 1
-    if (counter >= 25):
-        post(get_speed(speedX, speedY, speedZ))
-        counter = 0
-        speedX = 0
-        speedY = 0
-        speedZ = 0
-
     t = time()
     gyro_xout = read_word_2c(0x43)
     gyro_yout = read_word_2c(0x45)
@@ -157,10 +145,6 @@ while(True):
     Ay = (lastAy + Accy) * dt / 2 * 100
     Az = (lastAz + Accz) * dt / 2 * 100
 
-    speedX += Ax
-    speedY += Ay
-    speedZ += Az
-    
     lasttimeX = gx;
     lasttimeY = gy;
     lasttimeZ = gz;
@@ -170,6 +154,7 @@ while(True):
     lastAz = Accz;
     
 
+    return Gyrox, Gyroy, Gyroz, Ax, Ay, Az
     '''
     print("TIME:", dt)
     print("GX:", Gyrox)
