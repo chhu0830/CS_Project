@@ -9,8 +9,6 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(red_pin, GPIO.OUT)
 GPIO.setup(green_pin, GPIO.OUT)
 
-
-
 def trigger(pin, value, t):
     GPIO.output(pin, value)
     time.sleep(t)
