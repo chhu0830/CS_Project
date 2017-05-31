@@ -181,9 +181,9 @@ while True:
     else:
         light('white', 0.01)
 
-    Ax = kalmanFilter(Ax, p[0], q[0], r[0], kGain[0], prevData[0])
-    Ay = kalmanFilter(Ay, p[1], q[1], r[1], kGain[1], prevData[1])
-    Az = kalmanFilter(Az, p[2], q[2], r[2], kGain[2], prevData[2])
+    AAx, p[0], q[0], r[0], kGain[0], prevData[0] = kalmanFilter(Ax, p[0], q[0], r[0], kGain[0], prevData[0])
+    AAy, p[1], q[1], r[1], kGain[1], prevData[1] = kalmanFilter(Ax, p[1], q[1], r[1], kGain[1], prevData[1])
+    AAz, p[2], q[2], r[2], kGain[2], prevData[2] = kalmanFilter(Ax, p[2], q[2], r[2], kGain[2], prevData[2])
 
 
     speedX += Ax
