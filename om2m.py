@@ -2,10 +2,10 @@ import requests
 import sys
 from uuid import getnode as get_mac
 
-server = 'http://140.113.66.98:8080'
+server_ip = 'http://192.168.1.148:8080'
 
 def create_application(app_name):
-    url = server + '/~/in-cse'
+    url = server_ip + '/~/in-cse'
     headers={
         'X-M2M-Origin': 'admin:admin',
         'Content-Type': 'application/xml;ty=2',
@@ -20,7 +20,7 @@ def create_application(app_name):
     return r.status_code
 
 def create_container(app_name, con_name):
-    url = server + '/~/in-cse/in-name/' + app_name
+    url = server_ip + '/~/in-cse/in-name/' + app_name
     headers={
         'X-M2M-Origin': 'admin:admin',
         'Content-Type': 'application/xml;ty=3',
@@ -32,7 +32,7 @@ def create_container(app_name, con_name):
     return r.status_code
 
 def create_content_instance(app_name, con_name, con_ins_data):
-    url = server + '/~/in-cse/in-name/' + app_name + '/' +  con_name
+    url = server_ip + '/~/in-cse/in-name/' + app_name + '/' +  con_name
     headers={
         'X-M2M-Origin': 'admin:admin',
         'Content-Type': 'application/xml;ty=4',
@@ -47,22 +47,28 @@ def create_content_instance(app_name, con_name, con_ins_data):
     return r.status_code
 
 def subscribe(app_name, con_name):
-    sub_url = server + '/~/in-cse/in-name/' + app_name + '/' + con_name
+    import socket
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8", 1))
+    local_ip = s.getsockname()[0]
+    s.close()
+
+    sub_url = server_ip + '/~/in-cse/in-name/' + app_name + '/' + con_name
     sub_headers={
         'X-M2M-Origin': 'admin:admin',
         'Content-Type': 'application/xml;ty=23',
         'X-M2M-NM': 'SUB'
     }
     sub_data='<m2m:sub xmlns:m2m="http://www.onem2m.org/xml/protocols">\
-                <nu>http://localhost:1400/monitor</nu>\
+                <nu>http://%s:1400/monitor</nu>\
                 <nct>2</nct>\
-              </m2m:sub>'
+              </m2m:sub>' % (local_ip)
     r = requests.post(sub_url, headers=sub_headers, data=sub_data)
     # print(r.text)
     return r.status_code
 
 def get_data(app_name, con_name):
-    url = server + '/~/in-cse/in-name/' + app_name + '/' +  con_name + '/la'
+    url = server_ip + '/~/in-cse/in-name/' + app_name + '/' +  con_name + '/la'
     headers = {
         'X-M2M-Origin': 'admin:admin'
     }
