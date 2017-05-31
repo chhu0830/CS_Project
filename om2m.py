@@ -42,14 +42,31 @@ def create_contain_instance(app_name, con_name, con_ins_data):
           </om2m:cin>' % con_ins_data
     print(requests.post(url, headers=headers, data=data))
 
+def subscribe(app_name, con_name):
+    print('before subscribe')
+    sub_url = server + '/~/in-cse/in-name/' + app_name + '/' + con_name
+    sub_headers={
+        'X-M2M-Origin': 'admin:admin',
+        'Content-Type': 'application/xml:ty=23'
+    }
+    sub_data='<m2m:sub xmlns:m2m="http://www.onem2m.org/xml/protocols">\
+                <nu>http://localhost:1400/monitor</nu>\
+                <nct>2</nct>\
+              </m2m:sub>'
+    print(requests.post(sub_url, headers=sub_headers, data=sub_data))
+    print('after subscribe')
 
-if __name__ == '__main__':
+def help():
     print('usage: python3 om2m.py 2 <application>')
     print('usage: python3 om2m.py 3 <application> <container>')
     print('usage: python3 om2m.py 4 <application> <container> <data>')
+
+if __name__ == '__main__':
     if sys.argv[1] == '2':
         create_application(sys.argv[2])
     elif sys.argv[1] == '3':
         create_container(sys.argv[2], sys.argv[3])
     elif sys.argv[1] == '4':
         create_contain_instance(sys.argv[2], sys.argv[3], sys.argv[4])
+    else:
+        help()

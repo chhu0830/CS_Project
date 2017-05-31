@@ -7,6 +7,7 @@ import time
 import sys
 import os
 from uuid import getnode as get_mac
+from om2m import subscribe
 
 if (len(sys.argv) != 3):
     print("usage:", sys.argv[0], "<IPaddress> <PORT>")
@@ -75,19 +76,6 @@ def get_x_rotation(x,y,z):
     radians = math.atan2(y, dist(x,z))
     return math.degrees(radians)
 
-def subscribe(application, container):
-    print('before subscribe')
-    sub_url = 'http://192.168.1.52:8080/~/in-cse/in-name/' + application + container
-    sub_headers={
-        'X-M2M-Origin': 'admin:admin',
-        'Content-Type': 'application/xml:ty=23'
-    }
-    sub_data='<m2m:sub xmlns:m2m="http://www.onem2m.org/xml/protocols">\
-                <nu>http://localhost:1400/monitor</nu>\
-                <nct>2</nct>\
-              </m2m:sub>'
-    print(requests.post(sub_url, headers=sub_headers, data=sub_data))
-    print('after subscribe')
 
 '''
 def post(speed, distance): 
@@ -132,9 +120,9 @@ speedZ = 0.00
 counter = 0
 
 #new container
-os.system("python3 om2m.py 3 " + sys.argv[1] + ' ' + sys.argv[2])
+os.system('python3 om2m.py 3 ' + 'COMMAND' + ' ' + 'TTT')
 #subscribe
-subscribe(sys.argv[1], sys.argv[2])
+subscribe('COMMAND', 'TTT')
 
 while True:
     bus = smbus.SMBus(1) # or bus = smbus.SMBus(1) for Revision 2 boards
