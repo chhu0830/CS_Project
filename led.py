@@ -18,7 +18,7 @@ def trigger(pin, value, t):
     time.sleep(t)
 
 if __name__ == '__main__':
-    if len(sys.argv == 3):
+    if len(sys.argv) == 3:
         if sys.argv[1] == 'green':
             trigger(green_pin, True, int(sys.argv[2]))
             trigger(green_pin, False, 0)
