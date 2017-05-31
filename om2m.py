@@ -56,13 +56,27 @@ def subscribe(app_name, con_name):
     print(requests.post(sub_url, headers=sub_headers, data=sub_data))
     print('after subscribe')
 
+def get_data(app_name, con_name):
+    url = server + '/~/in-cse/in-name/' + app_name + '/' +  con_name + '/la'
+    headers = {
+        'X-M2M-Origin': 'admin:admin'
+    }
+
+    r = requests.get(url, headers=headers)
+    begin = r.text.find("<con>") + 5
+    end = r.text.find("</con>") - 1
+    data = r.text[begin:end].strip().split(' ')
+    return data
+
 def help():
     print('usage: python3 om2m.py 2 <application>')
     print('usage: python3 om2m.py 3 <application> <container>')
     print('usage: python3 om2m.py 4 <application> <container> <data>')
 
 if __name__ == '__main__':
-    if sys.argv[1] == '2':
+    if len(sys.argv) == 1:
+        help()
+    elif sys.argv[1] == '2':
         create_application(sys.argv[2])
     elif sys.argv[1] == '3':
         create_container(sys.argv[2], sys.argv[3])
