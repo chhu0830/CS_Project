@@ -74,18 +74,24 @@ def get_data(app_name, con_name):
     return data
 
 def help():
-    print('usage: python3 om2m.py 2 <application>')
-    print('usage: python3 om2m.py 3 <application> <container>')
-    print('usage: python3 om2m.py 4 <application> <container> <data>')
+    print('create application     : python3 om2m.py app <application>')
+    print('create container       : python3 om2m.py con <application> <container>')
+    print('create content instance: python3 om2m.py ins <application> <container> <data>')
+    print('subscribe              : python3 om2m.py sub <application> <container>')
+    print('get last data          : python3 om2m.py get <application> <container>')
 
 if __name__ == '__main__':
     if len(sys.argv) == 1:
         help()
-    elif sys.argv[1] == '2':
+    elif sys.argv[1] == 'app':
         print(create_application(sys.argv[2]))
-    elif sys.argv[1] == '3':
+    elif sys.argv[1] == 'con':
         print(create_container(sys.argv[2], sys.argv[3]))
-    elif sys.argv[1] == '4':
+    elif sys.argv[1] == 'ins':
         print(create_content_instance(sys.argv[2], sys.argv[3], sys.argv[4]))
+    elif sys.argv[1] == 'sub':
+        print(subscribe(sys.argv[2], sys.argv[3]))
+    elif sys.argv[1] == 'get':
+        print(get_data(sys.argv[2], sys.argv[3]))
     else:
         help()
