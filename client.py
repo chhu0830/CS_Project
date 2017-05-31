@@ -10,7 +10,7 @@ from uuid import getnode as get_mac
 from om2m import subscribe
 
 if (len(sys.argv) != 3):
-    print("usage:", sys.argv[0], "<IPaddress> <PORT>")
+    print("usage: python3 client.py APP DATA")
     sys.exit()
 
 # sonic
