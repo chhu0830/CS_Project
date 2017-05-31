@@ -31,7 +31,7 @@ def create_container(app_name, con_name):
     r = requests.post(url, headers=headers, data=data)
     return r.status_code
 
-def create_contain_instance(app_name, con_name, con_ins_data):
+def create_content_instance(app_name, con_name, con_ins_data):
     url = server + '/~/in-cse/in-name/' + app_name + '/' +  con_name
     headers={
         'X-M2M-Origin': 'admin:admin',
@@ -50,14 +50,15 @@ def subscribe(app_name, con_name):
     sub_url = server + '/~/in-cse/in-name/' + app_name + '/' + con_name
     sub_headers={
         'X-M2M-Origin': 'admin:admin',
-        'Content-Type': 'application/xml;ty=23'
+        'Content-Type': 'application/xml;ty=23',
+        'X-M2M-NM': 'SUB'
     }
     sub_data='<m2m:sub xmlns:m2m="http://www.onem2m.org/xml/protocols">\
                 <nu>http://localhost:1400/monitor</nu>\
                 <nct>2</nct>\
               </m2m:sub>'
     r = requests.post(sub_url, headers=sub_headers, data=sub_data)
-    print(r.text)
+    # print(r.text)
     return r.status_code
 
 def get_data(app_name, con_name):
@@ -85,6 +86,6 @@ if __name__ == '__main__':
     elif sys.argv[1] == '3':
         print(create_container(sys.argv[2], sys.argv[3]))
     elif sys.argv[1] == '4':
-        print(create_contain_instance(sys.argv[2], sys.argv[3], sys.argv[4]))
+        print(create_content_instance(sys.argv[2], sys.argv[3], sys.argv[4]))
     else:
         help()
