@@ -40,7 +40,7 @@ def create_contain_instance(app_name, con_name, con_ins_data):
               <con>\
                   %s\
               </con>\
-          </om2m:cin>' % (str(get_mac()) + ' ' + con_ins_data)
+          </om2m:cin>' % con_ins_data
     print(requests.post(url, headers=headers, data=data))
 
 def subscribe(app_name, con_name):

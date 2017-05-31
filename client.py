@@ -181,7 +181,7 @@ while True:
     counter = counter + 1
     if (counter >= 25):
         result = '"' + str(get_speed(speedX, speedY, speedZ)) + ' ' + str(get_distance()) + '"'
-        os.system("python3 om2m.py 4 " + sys.argv[1] + ' ' + sys.argv[2] + ' ' + result)
+        os.system("python3 om2m.py 4 " + sys.argv[1] + ' ' + sys.argv[2] + ' ' + '"' + get_mac() + ' ' + result + '"')
         counter = 0
         speedX = speedY = speedZ = 0
 
