@@ -15,6 +15,6 @@ while True:
         continue
 
     if command == 'FAST':
-        os.system('python3 led.py green 0.2')
+        os.system('python3 led.py green 0.1')
     elif command == 'SLOW':
-        os.system('python3 led.py red 0.2')
+        os.system('python3 led.py red 0.1')
