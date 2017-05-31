@@ -11,28 +11,30 @@ danger_speed = 100.0
 low_speed = 10.0
 
 while True:
-    cur_speed, cur_distance = get_data('APP', 'DATA')
-    print(cur_speed, cur_distance)
+    mac, cur_speed, cur_distance = get_data('APP', 'DATA')
+    print(mac, cur_speed, cur_distance)
 
-    data['TTT'] = [cur_speed, cur_distance]
+    data[mac] = [cur_speed, cur_distance]
 
     max_speed = 0.0
+    command = ''
 
     if float(cur_distance) < danger_distance:
-        os.system('python3 om2m.py 4 COMMAND TTT SLOW')
+        command = 'SLOW'
         print('SLOW')
     elif float(cur_speed) > danger_speed:
-        os.system('python3 om2m.py 4 COMMAND TTT SLOW')
+        command = 'SLOW'
         print('SLOW')
     elif float(cur_speed) < max_speed:
-        os.system('python3 om2m.py 4 COMMAND TTT FAST')
+        command = 'FAST'
         print('FAST')
     elif float(cur_speed) < low_speed:
-        os.system('python3 om2m.py 4 COMMAND TTT FAST')
+        command = 'FAST'
         print('FAST')
     else:
-        os.system('python3 om2m.py 4 COMMAND TTT KEEP')
+        command = 'KEEP'
         print('KEEP')
+    os.system('python3 om2m.py 4 COMMAND ' + mac + ' ' + command)
     time.sleep(1)
 
 '''

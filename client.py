@@ -120,9 +120,9 @@ speedZ = 0.00
 counter = 0
 
 #new container
-os.system('python3 om2m.py 3 ' + 'COMMAND' + ' ' + 'TTT')
+os.system('python3 om2m.py 3 ' + 'COMMAND' + ' ' + str(get_mac()))
 #subscribe
-subscribe('COMMAND', 'TTT')
+subscribe('COMMAND', str(get_mac()))
 
 while True:
     bus = smbus.SMBus(1) # or bus = smbus.SMBus(1) for Revision 2 boards
