@@ -11,8 +11,18 @@ danger_speed = 100.0
 low_speed = 10.0
 
 while True:
-    mac, cur_speed, cur_distance = get_data('APP', 'DATA')
-    print(mac, cur_speed, cur_distance)
+    string = input()
+    start = string.find('<con>')
+    end = string.find('</con>')
+
+    if start != -1:
+        datum = string[start+5:end]
+        datum = datum.strip().split(' ')
+    else:
+        continue
+
+    print(datum)
+    mac, cur_speed, cur_distance = datum
 
     data[mac] = [cur_speed, cur_distance]
 
@@ -34,8 +44,7 @@ while True:
     else:
         command = 'KEEP'
         print('KEEP')
-    create_content_instance('COMMAND', mac, command)
-    time.sleep(1)
+    print(create_content_instance('COMMAND', mac, command))
 
 '''
     for i in data:
