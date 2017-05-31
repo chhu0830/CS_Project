@@ -49,6 +49,20 @@ def get_distance():
 power_mgmt_1 = 0x6b
 power_mgmt_2 = 0x6c
 
+p = [10, 10, 10]
+q = [0.001, 0.001, 0.001]
+r = [0.05, 0.05, 0.05]
+kGain = [0, 0, 0]
+prevData = [0, 0 ,0]
+
+def kalmanFilter(inData, p, q, r, kGain, prevData):
+    p = p + q
+    kGain = p / (p + r)
+    inData = prevData + (kGain * (inData - prevData))
+    p = (1 - kGain) * p
+    prevData = inData
+    return inData
+
 def read_byte(adr):
     return bus.read_byte_data(address, adr)
 
@@ -164,6 +178,10 @@ while True:
     if abs(Az) < offset:
         Az = 0
 
+    Ax = kalmanFilter(Ax, p[0], q[0], r[0], kGain[0], prevData[0])
+    Ay = kalmanFilter(Ay, p[1], q[1], r[1], kGain[1], prevData[1])
+    Az = kalmanFilter(Az, p[2], q[2], r[2], kGain[2], prevData[2])
+
     speedX += Ax
     speedY += Ay
     speedZ += Az
@@ -179,7 +197,7 @@ while True:
     counter = counter + 1
     if (counter >= 25):
         data = '%d %lf %lf' % (get_mac(), get_speed(speedX, speedY, speedZ), get_distance())
-        print(create_content_instance(sys.argv[1], sys.argv[2], data))
+        print(data, create_content_instance(sys.argv[1], sys.argv[2], data))
         counter = 0
         speedX = speedY = speedZ = 0
 
