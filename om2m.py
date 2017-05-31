@@ -16,7 +16,8 @@ def create_application(app_name):
               <lbl>Tpye/sensor Category/temperature Location/home</lbl>\
               <rr>false</rr>\
           </om2m:ae>'
-    print(requests.post(url, headers=headers, data=data))
+    r = requests.post(url, headers=headers, data=data)
+    return r.status_code
 
 def create_container(app_name, con_name):
     url = server + '/~/in-cse/in-name/' + app_name
@@ -27,7 +28,8 @@ def create_container(app_name, con_name):
     }
     data='<om2m:cnt xmlns:om2m="http://www.onem2m.org/xml/protocols">\
           </om2m:cnt>'
-    print(requests.post(url, headers=headers, data=data))
+    r = requests.post(url, headers=headers, data=data)
+    return r.status_code
 
 def create_contain_instance(app_name, con_name, con_ins_data):
     url = server + '/~/in-cse/in-name/' + app_name + '/' +  con_name
@@ -41,10 +43,10 @@ def create_contain_instance(app_name, con_name, con_ins_data):
                   %s\
               </con>\
           </om2m:cin>' % con_ins_data
-    print(requests.post(url, headers=headers, data=data))
+    r = requests.post(url, headers=headers, data=data)
+    return r.status_code
 
 def subscribe(app_name, con_name):
-    print('before subscribe')
     sub_url = server + '/~/in-cse/in-name/' + app_name + '/' + con_name
     sub_headers={
         'X-M2M-Origin': 'admin:admin',
@@ -56,7 +58,7 @@ def subscribe(app_name, con_name):
               </m2m:sub>'
     r = requests.post(sub_url, headers=sub_headers, data=sub_data)
     print(r.text)
-    print('after subscribe')
+    return r.status_code
 
 def get_data(app_name, con_name):
     url = server + '/~/in-cse/in-name/' + app_name + '/' +  con_name + '/la'
@@ -79,10 +81,10 @@ if __name__ == '__main__':
     if len(sys.argv) == 1:
         help()
     elif sys.argv[1] == '2':
-        create_application(sys.argv[2])
+        print(create_application(sys.argv[2]))
     elif sys.argv[1] == '3':
-        create_container(sys.argv[2], sys.argv[3])
+        print(create_container(sys.argv[2], sys.argv[3]))
     elif sys.argv[1] == '4':
-        create_contain_instance(sys.argv[2], sys.argv[3], sys.argv[4])
+        print(create_contain_instance(sys.argv[2], sys.argv[3], sys.argv[4]))
     else:
         help()
