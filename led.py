@@ -19,19 +19,20 @@ def trigger(pin, value, t):
     GPIO.output(pin, value)
     time.sleep(t)
 
-def light(pin, time):
+def light(color, time):
+    if color == 'green':
+        pin = green_pin
+    elif color == 'red':
+        pin = red_pin
+    elif color == 'white':
+        pin = white_pin
+    else:
+        return
     trigger(pin, True, time)
     trigger(pin, False, 0)
 
 if __name__ == '__main__':
     if len(sys.argv) == 3:
-        if sys.argv[1] == 'green':
-            light(green_pin, float(sys.argv[2]))
-        elif sys.argv[1] == 'red':
-            light(red_pin, float(sys.argv[2]))
-        elif sys.argv[1] == 'white':
-            light(white_pin, float(sys.argv[2]))
-        else:
-            help()
+        light(sys.argv[1], float(sys.argv[2]))
     else:
         help()

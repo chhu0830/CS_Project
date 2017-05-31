@@ -8,6 +8,7 @@ import sys
 import os
 from uuid import getnode as get_mac
 from om2m import subscribe, create_container, create_content_instance
+from led import light
 
 if (len(sys.argv) != 3):
     print("usage: python3 client.py APP DATA")
@@ -170,17 +171,20 @@ while True:
     Ay = (lastAy + Accy) * dt / 2 * 100
     Az = (lastAz + Accz) * dt / 2 * 100
 
-    offset = 0.5
+    offset = 0.4
     if abs(Ax) < offset:
         Ax = 0
     if abs(Ay) < offset:
         Ay = 0
     if abs(Az) < offset:
         Az = 0
+    else:
+        light('white', 0.01)
 
     Ax = kalmanFilter(Ax, p[0], q[0], r[0], kGain[0], prevData[0])
     Ay = kalmanFilter(Ay, p[1], q[1], r[1], kGain[1], prevData[1])
     Az = kalmanFilter(Az, p[2], q[2], r[2], kGain[2], prevData[2])
+
 
     speedX += Ax
     speedY += Ay
