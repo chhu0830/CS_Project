@@ -2,17 +2,34 @@
 
 import smbus
 import math
-import time
-from time import time
+from time import time, sleep
 import sys
 
+'''
 if (len(sys.argv) != 2):
     print("usage:", sys.argv[0], "<IPaddress>")
     sys.exit();
-
+'''
 # Power management registers
 power_mgmt_1 = 0x6b
 power_mgmt_2 = 0x6c
+
+p = 10
+q = 0.001
+r = 0.05
+kGain = 0
+prevData = 0
+
+f = open('curve.csv', 'w')
+
+def kalmanFilter(inData):
+    global p, q, r, kGain, prevData
+    p = p + q
+    kGain = p / (p + r)
+    inData = prevData + (kGain * (inData - prevData))
+    p = (1 - kGain) * p
+    prevData = inData
+    return inData
 
 def read_byte(adr):
     return bus.read_byte_data(address, adr)
@@ -41,6 +58,7 @@ def get_x_rotation(x,y,z):
     radians = math.atan2(y, dist(x,z))
     return math.degrees(radians)
 
+'''
 def post(speed): 
     import requests
     from datetime import datetime
@@ -57,6 +75,7 @@ def post(speed):
     }
     r = requests.post(url, data=payload)
     return
+'''
 
 def get_speed(x, y, z):
     return (abs(x)**3 + abs(y)**3 + abs(z)**3)**(1/3.0)
@@ -77,7 +96,7 @@ lastAx = 0.00
 lastAy = 0.00
 lastAz = 0.00
 
-def gy521():
+while True:
     bus = smbus.SMBus(1) # or bus = smbus.SMBus(1) for Revision 2 boards
     address = 0x68       # This is the address value read via the i2cdetect command
 
@@ -154,17 +173,30 @@ def gy521():
     lastAz = Accz;
     
 
-    return Gyrox, Gyroy, Gyroz, Ax, Ay, Az
     '''
     print("TIME:", dt)
     print("GX:", Gyrox)
     print("GY:", Gyroy)
     print("GZ:", Gyroz)
-
+    '''
+    
     print("Ax:", Ax)
     print("Ay:", Ay)
     print("Az:", Az)
+    print("dt", dt)
     print
+    AAx = kalmanFilter(Ax)
+    AAy = kalmanFilter(Ay)
+    AAz = kalmanFilter(Az)
+    '''
+    print("Ax:", Ax)
+    print("Ay:", Ay)
+    print("Az:", Az)
     print("dt", dt)
     '''
-    # time.sleep(0.01)
+    print("----------------")
+    f.write("{0},{1},{2},{3},{4},{5}\n".format( Ax, Ay, Az, AAx, AAy, AAz))
+    
+    #sleep(0.2)
+f.close()
+  
