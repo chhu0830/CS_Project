@@ -20,10 +20,10 @@ def trigger(pin, value, t):
 if __name__ == '__main__':
     if len(sys.argv) == 3:
         if sys.argv[1] == 'green':
-            trigger(green_pin, True, int(sys.argv[2]))
+            trigger(green_pin, True, float(sys.argv[2]))
             trigger(green_pin, False, 0)
         elif sys.argv[1] == 'red':
-            trigger(red_pin, True, int(sys.argv[2]))
+            trigger(red_pin, True, float(sys.argv[2]))
             trigger(red_pin, False, 0)
         else:
             help()
