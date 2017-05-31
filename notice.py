@@ -4,11 +4,16 @@ import os
 
 while True:
     string = input()
-    print(string)
-    start = string.find('<con>') + 5
+    start = string.find('<con>')
     end = string.find('</con>')
-    command = string[start:end]
-    command = command.strip()
+
+    if start != -1:
+        command = string[start+5:end]
+        command = command.strip()
+        print(command)
+    else:
+        continue
+
     if command == 'FAST':
         os.system('python3 led.py green 0.2')
     elif command == 'SLOW':
