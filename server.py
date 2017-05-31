@@ -3,7 +3,7 @@ import os
 import sys
 import datetime
 import time
-from om2m import get_data
+from om2m import get_data, create_content_instance
 
 data = {}
 danger_distance = 20.0
@@ -34,7 +34,7 @@ while True:
     else:
         command = 'KEEP'
         print('KEEP')
-    os.system('python3 om2m.py 4 COMMAND ' + mac + ' ' + command)
+    create_content_instance('COMMAND', mac, command)
     time.sleep(1)
 
 '''

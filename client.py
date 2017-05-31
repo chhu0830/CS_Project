@@ -7,7 +7,7 @@ import time
 import sys
 import os
 from uuid import getnode as get_mac
-from om2m import subscribe
+from om2m import subscribe, create_container, create_content_instance
 
 if (len(sys.argv) != 3):
     print("usage: python3 client.py APP DATA")
@@ -119,10 +119,8 @@ speedY = 0.00
 speedZ = 0.00
 counter = 0
 
-#new container
-os.system('python3 om2m.py 3 ' + 'COMMAND' + ' ' + str(get_mac()))
-#subscribe
-subscribe('COMMAND', str(get_mac()))
+print('create container', create_container('COMMAND', str(get_mac())))
+print('subscribe', subscribe('COMMAND', str(get_mac())))
 
 while True:
     bus = smbus.SMBus(1) # or bus = smbus.SMBus(1) for Revision 2 boards
@@ -180,8 +178,8 @@ while True:
 
     counter = counter + 1
     if (counter >= 25):
-        data = '"' + str(get_mac()) + ' ' + str(get_speed(speedX, speedY, speedZ)) + ' ' + str(get_distance()) + '"'
-        os.system("python3 om2m.py 4 " + sys.argv[1] + ' ' + sys.argv[2] + ' ' + data)
+        data = '%d %lf %lf' % (get_mac(), get_speed(speedX, speedY, speedZ), get_distance())
+        print(create_content_instance(sys.argv[1], sys.argv[2], data))
         counter = 0
         speedX = speedY = speedZ = 0
 
