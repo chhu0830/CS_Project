@@ -7,8 +7,8 @@ import time
 import sys
 import os
 from uuid import getnode as get_mac
-from om2m import subscribe, create_container, create_content_instance
-from led import light
+from utils.om2m import subscribe, create_container, create_content_instance
+from utils.led import light
 
 if (len(sys.argv) != 3):
     print("usage: python3 client.py APP DATA")

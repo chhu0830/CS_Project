@@ -3,7 +3,7 @@ import os
 import sys
 import datetime
 import time
-from om2m import get_data, create_content_instance
+from utils.om2m import get_data, create_content_instance
 
 data = {}
 danger_distance = 20.0
