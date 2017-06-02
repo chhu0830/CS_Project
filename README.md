@@ -8,7 +8,7 @@
 
 ### Server
 - $ java -jar monitor.jar | python3 server.py
-- $ sh utils/init.sh
+- $ sh init.sh
 
 ### Client
 - $ java -jar monitor.jar | python3 utils/notice.py
