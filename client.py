@@ -62,7 +62,7 @@ def kalmanFilter(inData, p, q, r, kGain, prevData):
     inData = prevData + (kGain * (inData - prevData))
     p = (1 - kGain) * p
     prevData = inData
-    return inData
+    return inData, p, q, r, kGain, prevData
 
 def read_byte(adr):
     return bus.read_byte_data(address, adr)
@@ -181,9 +181,9 @@ while True:
     else:
         light('white', 0.01)
 
-    AAx, p[0], q[0], r[0], kGain[0], prevData[0] = kalmanFilter(Ax, p[0], q[0], r[0], kGain[0], prevData[0])
-    AAy, p[1], q[1], r[1], kGain[1], prevData[1] = kalmanFilter(Ax, p[1], q[1], r[1], kGain[1], prevData[1])
-    AAz, p[2], q[2], r[2], kGain[2], prevData[2] = kalmanFilter(Ax, p[2], q[2], r[2], kGain[2], prevData[2])
+    Ax, p[0], q[0], r[0], kGain[0], prevData[0] = kalmanFilter(Ax, p[0], q[0], r[0], kGain[0], prevData[0])
+    Ay, p[1], q[1], r[1], kGain[1], prevData[1] = kalmanFilter(Ax, p[1], q[1], r[1], kGain[1], prevData[1])
+    Az, p[2], q[2], r[2], kGain[2], prevData[2] = kalmanFilter(Ax, p[2], q[2], r[2], kGain[2], prevData[2])
 
 
     speedX += Ax
