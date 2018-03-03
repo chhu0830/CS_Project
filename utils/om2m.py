@@ -1,8 +1,10 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 import requests
 import sys
 from uuid import getnode as get_mac
 
-server_ip = 'http://192.168.1.148:8080'
+server_ip = 'http://ip:port'
 
 def create_application(app_name):
     url = server_ip + '/~/in-cse'
@@ -79,12 +81,25 @@ def get_data(app_name, con_name):
     data = r.text[begin:end].strip().split(' ')
     return data
 
+def last_time(app_name, con_name):
+    url = server_ip + '/~/in-cse/in-name/' + app_name + '/' +  con_name + '/la'
+    headers = {
+        'X-M2M-Origin': 'admin:admin'
+    }
+
+    r = requests.get(url, headers=headers)
+    begin = r.text.find("<lt>") + 4
+    end = r.text.find("</lt>") - 1
+    data = r.text[begin:end].strip().split(' ')
+    return data
+
 def help():
     print('create application     : python3 om2m.py app <application>')
     print('create container       : python3 om2m.py con <application> <container>')
     print('create content instance: python3 om2m.py ins <application> <container> <data>')
     print('subscribe              : python3 om2m.py sub <application> <container>')
     print('get last data          : python3 om2m.py get <application> <container>')
+    print('get last modify time   : python3 om2m.py time <application> <container>')
 
 if __name__ == '__main__':
     if len(sys.argv) == 1:
@@ -99,5 +114,7 @@ if __name__ == '__main__':
         print(subscribe(sys.argv[2], sys.argv[3]))
     elif sys.argv[1] == 'get':
         print(get_data(sys.argv[2], sys.argv[3]))
+    elif sys.argv[1] == 'time':
+        print(last_time(sys.argv[2], sys.argv[3]))
     else:
         help()
